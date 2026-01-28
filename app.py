@@ -4,6 +4,7 @@ from data.chunking import split_documents
 from data.embeddings import generateEmbeddings
 from data.vector_store import addDataToTheStore, createOrGetCollection
 from data.retriever import ragRetriever, generateResponse
+from data.model.retriever_model import QueryModel, ResponseModel
 
 app = FastAPI()
 
@@ -52,11 +53,10 @@ def retrieve(query: str, top_k: int = 5):
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/generate/response")
-def generateResponseWithContext(query: str):
+def generateResponseWithContext(query_request: QueryModel):
     try:
-        response = generateResponse(query=query)
-        return {
-            "data": response
-        }
+        response = generateResponse(query=query_request.query)
+        print(response, "response")
+        return ResponseModel(content=response.content, questions=response.questions)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

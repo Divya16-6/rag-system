@@ -1,6 +1,7 @@
 from data.vector_store import createOrGetCollection
 from data.embeddings import generateEmbeddings
 from data.llm_loader import generateLLMResponse
+from data.model.retriever_model import ResponseModel
 
 def ragRetriever(query: str, top_k: int):
     query_embedding = generateEmbeddings([query])[0]
@@ -21,6 +22,6 @@ def generateResponse(query: str):
         documents = results["documents"][0]
         context = "\n\n".join(documents) 
         response = generateLLMResponse(context, query)
-        return response
+        return ResponseModel(content=response.content, questions=response.questions)
     except Exception as e:
         raise
