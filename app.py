@@ -31,7 +31,6 @@ def processDoc(file: UploadFile = File(...)):
 
         addDataToTheStore(split_docs, embeddings, collectionName="sample_python_store")
         data = createOrGetCollection("sample_python_store")
-        print(data.count())
         return {
         "pages": len(docs),
         "chunks": len(split_docs),
@@ -56,7 +55,6 @@ def retrieve(query: str, top_k: int = 5):
 def generateResponseWithContext(query_request: QueryModel):
     try:
         response = generateResponse(query=query_request.query)
-        print(response, "response")
         return ResponseModel(content=response.content, questions=response.questions)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

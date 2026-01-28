@@ -62,7 +62,6 @@ def responseBasedQuestion(data: str):
     try:
         messages = [HumanMessage(content=formatted_query)]
         response = llm.invoke(messages)
-        print("response of question", response.content)
         return ast.literal_eval(response.content)
     except Exception as e:
         raise
