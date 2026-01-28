@@ -20,7 +20,6 @@ def createModel(model_name: str, api_key: str):
 def generateLLMResponse(context: str, query: str):
     model_name="llama-3.1-8b-instant"
     api_key=os.getenv("groq_api_key")
-    print("Groq api key", api_key)
     llm = createModel(model_name, api_key)
 
     promptTemplate = PromptTemplate(
@@ -36,7 +35,6 @@ def generateLLMResponse(context: str, query: str):
     try:
         messages = [HumanMessage(content=formatted_query)]
         response = llm.invoke(messages)
-        print(response.content)
         questions = responseBasedQuestion(response.content)
         return ResponseModel(content=response.content, questions=questions)
     except Exception as e:
